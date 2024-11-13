@@ -1,39 +1,55 @@
 package com.example.myapplication
 
-import android.content.Intent
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
+import android.widget.ImageButton
+import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class Perfil : AppCompatActivity() {
-    private lateinit var bottomNavigation: BottomNavigationView
+
+    private lateinit var btnBack: ImageButton
+    private lateinit var btnEditarNome: ImageButton
+    private lateinit var btnEditarEmail: ImageButton
+    private lateinit var btnEditarSenha: ImageButton
+    private lateinit var btnConfirmar: ImageButton
+    private lateinit var txtNome: TextView
+    private lateinit var txtEmail: TextView
+    private lateinit var txtSenha: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContentView(R.layout.activity_perfil)
-        bottomNavigation = findViewById(R.id.bottomNavigation)
 
-        bottomNavigation.setOnItemSelectedListener { item ->
-            when (item.itemId) {
-                R.id.navigation_settings -> {
-                    val intent = Intent(this, Perfil::class.java)
-                    startActivity(intent)
-                    true
-                }
-                R.id.navigation_catalog -> {
-                    val intent = Intent(this, ListaFav::class.java)
-                    startActivity(intent)
-                    true
-                }
-                R.id.navigation_profile -> {
-                    val intent = Intent(this, Perfil::class.java)
-                    startActivity(intent)
-                    true
-                }
-                else -> false
-            }
+        // Inicializa os componentes
+        btnBack = findViewById(R.id.btnBack)
+        btnEditarNome = findViewById(R.id.btnEditarNome)
+        btnEditarEmail = findViewById(R.id.btnEditarEmail)
+        btnEditarSenha = findViewById(R.id.btnEditarSenha)
+        btnConfirmar = findViewById(R.id.btnConfirmar)
+        txtNome = findViewById(R.id.txtNome)
+        txtEmail = findViewById(R.id.txtEmail)
+        txtSenha = findViewById(R.id.txtSenha)
+
+        // Configurações de clique
+        btnBack.setOnClickListener {
+            finish()
+        }
+
+        btnEditarNome.setOnClickListener {
+            Toast.makeText(this, "Editar Nome", Toast.LENGTH_SHORT).show()
+        }
+
+        btnEditarEmail.setOnClickListener {
+            Toast.makeText(this, "Editar Email", Toast.LENGTH_SHORT).show()
+        }
+
+        btnEditarSenha.setOnClickListener {
+            Toast.makeText(this, "Editar Senha", Toast.LENGTH_SHORT).show()
+        }
+
+        btnConfirmar.setOnClickListener {
+            Toast.makeText(this, "Informações salvas", Toast.LENGTH_SHORT).show()
         }
     }
 }
