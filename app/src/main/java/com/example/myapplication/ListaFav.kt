@@ -2,20 +2,44 @@ package com.example.myapplication
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.gson.Gson
 
 class ListaFav : AppCompatActivity() {
+    private lateinit var recyclerView: RecyclerView
     private lateinit var bottomNavigation: BottomNavigationView
+    private lateinit var favoritosAdapter: PontoTuristicoAdapter
+    private lateinit var listaFavoritos: MutableList<PontoTuristico>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContentView(R.layout.activity_lista_fav)
 
-        bottomNavigation = findViewById(R.id.bottomNavigation)
+        // Inicializa a RecyclerView
+        recyclerView = findViewById(R.id.recyclerViewFavoritos)
+        recyclerView.layoutManager = LinearLayoutManager(this)
 
+        // Recupera os favoritos salvos em SharedPreferences
+        val sharedPreferences = getSharedPreferences("FAVORITOS", MODE_PRIVATE)
+        val favoritosJson = sharedPreferences.all.values // Obtém todos os favoritos salvos
+        listaFavoritos = mutableListOf()
+
+        // Converte o JSON salvo para objetos do tipo PontoTuristico
+        val gson = Gson()
+        favoritosJson.forEach { favorito ->
+            val pontoTuristico = gson.fromJson(favorito.toString(), PontoTuristico::class.java)
+            listaFavoritos.add(pontoTuristico)
+        }
+
+        // Configura o adapter
+        favoritosAdapter = PontoTuristicoAdapter(listaFavoritos, this)
+        recyclerView.adapter = favoritosAdapter
+
+        // Configura o BottomNavigationView
+        bottomNavigation = findViewById(R.id.bottomNavigation)
         bottomNavigation.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.navigation_settings -> {
@@ -24,7 +48,7 @@ class ListaFav : AppCompatActivity() {
                     true
                 }
                 R.id.navigation_catalog -> {
-                    val intent = Intent(this, ListaFav::class.java)
+                    val intent = Intent(this, MenuPrincipal::class.java)
                     startActivity(intent)
                     true
                 }
@@ -36,7 +60,5 @@ class ListaFav : AppCompatActivity() {
                 else -> false
             }
         }
-
-
     }
 }

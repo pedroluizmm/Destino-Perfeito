@@ -24,9 +24,9 @@ class MenuPrincipal : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
 
         listaPontosTuristicos = mutableListOf(
-            PontoTuristico("Beach Park", "Informação 1", "Informação 2", "Informação 3"),
-            PontoTuristico("Cataratas", "Informação 1", "Informação 2", "Informação 3"),
-            PontoTuristico("Coco", "Informação 1", "Informação 2", "Informação 3")
+            PontoTuristico("Beach Park", "Informação 1", "Informação 2", "Informação 3",-3.8459892,-38.3920148),
+            PontoTuristico("Parque Estadual do coco", "Informação 1", "Informação 2", "Informação 3",-3.7501652,-38.4865193),
+            PontoTuristico("Coco", "Informação 1", "Informação 2", "Informação 3", -3.7179,-38.5267)
             // Adicione mais pontos turísticos aqui
         )
 
