@@ -13,7 +13,6 @@ class MenuPrincipal : AppCompatActivity() {
     private lateinit var bottomNavigation: BottomNavigationView
     private lateinit var textViewMapa: TextView
     private lateinit var adapter: PontoTuristicoAdapter
-    private lateinit var listaPontosTuristicos: MutableList<PontoTuristico>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,13 +22,8 @@ class MenuPrincipal : AppCompatActivity() {
         recyclerView = findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        listaPontosTuristicos = mutableListOf(
-            PontoTuristico("Beach Park", "Informação 1", "Informação 2", "Informação 3",-3.8459892,-38.3920148),
-            PontoTuristico("Parque Estadual do coco", "Informação 1", "Informação 2", "Informação 3",-3.7501652,-38.4865193),
-            PontoTuristico("Coco", "Informação 1", "Informação 2", "Informação 3", -3.7179,-38.5267)
-            // Adicione mais pontos turísticos aqui
-        )
-
+        // Usando o repositório para acessar a lista de pontos turísticos
+        val listaPontosTuristicos = PontoTuristicoRepositorio.listaPontosTuristicos
         adapter = PontoTuristicoAdapter(listaPontosTuristicos, this)
         recyclerView.adapter = adapter
 
@@ -60,6 +54,5 @@ class MenuPrincipal : AppCompatActivity() {
             val intent = Intent(this, Mapa::class.java)
             startActivity(intent)
         }
-
     }
 }

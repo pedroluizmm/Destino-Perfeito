@@ -61,4 +61,39 @@ class ListaFav : AppCompatActivity() {
             }
         }
     }
+    override fun onResume() {
+        super.onResume()
+        atualizarListaFavoritos()
+    }
+
+    private fun atualizarListaFavoritos() {
+        val sharedPreferences = getSharedPreferences("FAVORITOS", MODE_PRIVATE)
+        val favoritosJson = sharedPreferences.all.values
+        val gson = Gson()
+
+        val novaListaFavoritos = favoritosJson.map { favorito ->
+            gson.fromJson(favorito.toString(), PontoTuristico::class.java)
+        }
+
+        val itensRemovidos = listaFavoritos.filterNot { it in novaListaFavoritos }
+        val itensAdicionados = novaListaFavoritos.filterNot { it in listaFavoritos }
+
+        // Remove itens antigos
+        itensRemovidos.forEach { item ->
+            val index = listaFavoritos.indexOf(item)
+            if (index != -1) {
+                listaFavoritos.removeAt(index)
+                favoritosAdapter.notifyItemRemoved(index)
+            }
+        }
+
+        // Adiciona novos itens
+        itensAdicionados.forEach { item ->
+            listaFavoritos.add(item)
+            val index = listaFavoritos.indexOf(item)
+            favoritosAdapter.notifyItemInserted(index)
+        }
+    }
+
+
 }

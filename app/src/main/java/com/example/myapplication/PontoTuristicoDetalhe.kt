@@ -49,17 +49,26 @@ class PontoTuristicoDetalhe : AppCompatActivity() {
         // Configura o botão de Favoritar
         findViewById<Button>(R.id.buttonFavoritar).setOnClickListener {
             pontoTuristico?.let {
-                // Salvar o nome e a latitude e longitude do ponto turístico como exemplo
                 val sharedPreferences = getSharedPreferences("FAVORITOS", MODE_PRIVATE)
                 val editor = sharedPreferences.edit()
 
-                // Aqui você pode salvar as informações como String, por exemplo
-                val pontoJson = Gson().toJson(it) // Usando Gson para converter o objeto em JSON
-                editor.putString(it.nome, pontoJson)
-                editor.apply()
+                // Verifica se o item já está nos favoritos
+                val favoritoExistente = sharedPreferences.contains(it.nome)
 
-                Toast.makeText(this, "${it.nome} foi adicionado aos favoritos!", Toast.LENGTH_SHORT)
-                    .show()
+                if (favoritoExistente) {
+                    // Remove o item dos favoritos
+                    editor.remove(it.nome)
+                    editor.apply()
+
+                    Toast.makeText(this, "${it.nome} foi removido dos favoritos!", Toast.LENGTH_SHORT).show()
+                } else {
+                    // Adiciona o item aos favoritos
+                    val pontoJson = Gson().toJson(it)
+                    editor.putString(it.nome, pontoJson)
+                    editor.apply()
+
+                    Toast.makeText(this, "${it.nome} foi adicionado aos favoritos!", Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }
