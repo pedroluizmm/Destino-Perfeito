@@ -8,51 +8,16 @@
     tools:context=".MenuPrincipal">
 
     <androidx.appcompat.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:id="@+id/toolbar"
-        android:layout_width="0dp"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:id="@+id/searchIcon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@android:drawable/ic_menu_search"
-                android:contentDescription="Ícone de busca" />
-
-            <TextView
-                android:id="@+id/textViewCatalogo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Catálogo"
-                android:layout_marginStart="16dp"
-                android:textColor="@android:color/white" />
-
-            <TextView
-                android:id="@+id/textViewMapa"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Mapa"
-                android:layout_marginStart="16dp"
-                android:textColor="@android:color/white" />
-
-            <TextView
-                android:id="@+id/textViewFiltro"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Filtro"
-                android:layout_marginStart="16dp"
-                android:textColor="@android:color/white" />
-        </LinearLayout>
-    </androidx.appcompat.widget.Toolbar>
+        android:background="@color/lavender"
+        app:title="DP"
+        app:titleMarginStart="30dp"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:layout_constraintTop_toTopOf="parent"
+        />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"

@@ -52,7 +52,7 @@ class ListaFav : AppCompatActivity() {
                     startActivity(intent)
                     true
                 }
-                R.id.navigation_profile -> {
+                R.id.Mapa -> {
                     val intent = Intent(this, Perfil::class.java)
                     startActivity(intent)
                     true
