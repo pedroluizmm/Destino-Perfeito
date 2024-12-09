@@ -9,14 +9,17 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.gson.Gson
-import com.example.myapplication.PontoTuristico
 import android.graphics.BitmapFactory
 
 class PontoTuristicoDetalhe : AppCompatActivity() {
+    private val favoritesManager = FavoritesManager()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_ponto_turistico_detalhe)
+
+        // Declara apenas uma vez
+        val buttonFavoritar: Button = findViewById(R.id.buttonFavoritar)
 
         // Recupera os dados do Intent
         val nome = intent.getStringExtra("PONTO_NOME")
@@ -35,7 +38,21 @@ class PontoTuristicoDetalhe : AppCompatActivity() {
         findViewById<TextView>(R.id.textViewInfo2).text = avaliacao ?: "Sem avaliações disponíveis"
         findViewById<TextView>(R.id.textViewInfo3).text = horario ?: "Horário não disponível"
 
-        // Carrega a imagem do cache
+        // Configura a lógica do botão "Favoritar"
+        val pontoTuristico = FavoriteItem(
+            id = "123",
+            name = nome ?: "Sem nome",
+            description = endereco ?: "Endereço não disponível"
+        )
+
+        buttonFavoritar.setOnClickListener {
+            favoritesManager.addFavoriteItem(pontoTuristico, {
+                Toast.makeText(this, "Adicionado aos favoritos!", Toast.LENGTH_SHORT).show()
+            }, { error ->
+                Toast.makeText(this, error, Toast.LENGTH_SHORT).show()
+            })
+        }
+
         if (imagePath != null) {
             val bitmap = BitmapFactory.decodeFile(imagePath)
             imageView.setImageBitmap(bitmap)
@@ -50,7 +67,6 @@ class PontoTuristicoDetalhe : AppCompatActivity() {
             if (intent.resolveActivity(packageManager) != null) {
                 startActivity(intent) // Abrir no Waze
             } else {
-                // Fallback caso o Waze não esteja instalado
                 startActivity(
                     Intent(
                         Intent.ACTION_VIEW,
@@ -60,16 +76,11 @@ class PontoTuristicoDetalhe : AppCompatActivity() {
             }
         }
 
-        // Configura o botão de Favoritar
-        val buttonFavoritar = findViewById<Button>(R.id.buttonFavoritar)
         val sharedPreferences = getSharedPreferences("FAVORITOS", MODE_PRIVATE)
         val editor = sharedPreferences.edit()
-
-        // Verifica se o item já está nos favoritos
         val gson = Gson()
         val favoritoExistente = sharedPreferences.contains(nome)
 
-        // Atualiza o texto do botão com base no estado atual
         buttonFavoritar.text = if (favoritoExistente) "Remover dos Favoritos" else "Adicionar aos Favoritos"
 
         buttonFavoritar.setOnClickListener {
@@ -80,23 +91,20 @@ class PontoTuristicoDetalhe : AppCompatActivity() {
                 info3 = horario ?: "",
                 latitude = latitude,
                 longitude = longitude,
-                fotoPath = imagePath // Salva o caminho da imagem no cache
+                fotoPath = imagePath
             )
             val pontoJson = gson.toJson(ponto)
 
             if (favoritoExistente) {
-                // Remove o ponto dos favoritos
                 editor.remove(nome)
                 Toast.makeText(this, "$nome foi removido dos favoritos!", Toast.LENGTH_SHORT).show()
                 buttonFavoritar.text = "Adicionar aos Favoritos"
             } else {
-                // Adiciona o ponto aos favoritos
                 editor.putString(nome, pontoJson)
                 Toast.makeText(this, "$nome foi adicionado aos favoritos!", Toast.LENGTH_SHORT).show()
                 buttonFavoritar.text = "Remover dos Favoritos"
             }
-            editor.apply() // Aplica as mudanças no SharedPreferences
+            editor.apply()
         }
     }
 }
-

@@ -10,19 +10,44 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
+import android.widget.Toast
 
 class ListaFavFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var favoritosAdapter: PontoTuristicoAdapter
     private lateinit var listaFavoritos: MutableList<PontoTuristico>
 
+    private val favoritesManager = FavoritesManager()
+    private lateinit var favoritesAdapter: FavoritesAdapter
+    private val favoriteItems = mutableListOf<FavoriteItem>()
+
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
+        inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_lista_fav, container, false)
+        val view = inflater.inflate(R.layout.fragment_lista_fav, container, false)
+
+        // Configurar RecyclerView
+        val recyclerView: RecyclerView = view.findViewById(R.id.recyclerViewFavoritos)
+        recyclerView.layoutManager = LinearLayoutManager(context)
+        favoritesAdapter = FavoritesAdapter(favoriteItems)
+        recyclerView.adapter = favoritesAdapter
+
+        loadFavorites()
+
+        return view
     }
+
+    private fun loadFavorites() {
+        favoritesManager.getFavoriteItems({ items ->
+            favoriteItems.clear()
+            favoriteItems.addAll(items)
+            favoritesAdapter.notifyDataSetChanged()
+        }, { error ->
+            Toast.makeText(context, error, Toast.LENGTH_SHORT).show()
+        })
+    }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

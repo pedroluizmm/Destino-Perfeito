@@ -33,6 +33,7 @@ class SignupTabFragment : Fragment() {
             val password = passwordEditText.text.toString().trim()
             val confirmPassword = confirmPasswordEditText.text.toString().trim()
 
+
             if (email.isNotEmpty() && password.isNotEmpty() && confirmPassword.isNotEmpty()) {
                 if (password == confirmPassword) {
                     auth.createUserWithEmailAndPassword(email, password)
