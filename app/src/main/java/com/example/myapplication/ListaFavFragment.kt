@@ -55,7 +55,7 @@ class ListaFavFragment : Fragment() {
     }
 
     private fun atualizarListaFavoritos() {
-        val sharedPreferences = getSharedPreferences("FAVORITOS", MODE_PRIVATE)
+        val sharedPreferences = requireContext().getSharedPreferences("FAVORITOS", MODE_PRIVATE)
         val favoritosJson = sharedPreferences.all.values
         val gson = Gson()
 

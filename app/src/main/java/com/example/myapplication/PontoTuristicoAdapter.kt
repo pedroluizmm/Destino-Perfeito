@@ -2,8 +2,10 @@ package com.example.myapplication
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.ImageView
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -27,10 +29,25 @@ class PontoTuristicoAdapter(
         holder.info2.text = ponto.info2
         holder.info3.text = ponto.info3
 
-        // Quando o item for clicado, navega para a PontoTuristicoDetalheActivity
+        if (ponto.fotoPath != null) {
+            val bitmap = BitmapFactory.decodeFile(ponto.fotoPath)
+            if (bitmap != null) {
+                holder.imageView.setImageBitmap(bitmap)
+            } else {
+                holder.imageView.setImageResource(R.drawable.logo_placeholder) // Imagem padrão
+            }
+        } else {
+            holder.imageView.setImageResource(R.drawable.logo_placeholder) // Imagem padrão
+        }
+
+        // Clique para detalhes
         holder.itemView.setOnClickListener {
             val intent = Intent(context, PontoTuristicoDetalhe::class.java)
-            intent.putExtra("PONTO_TURISTICO", ponto)
+            intent.putExtra("PONTO_NOME", ponto.nome)
+            intent.putExtra("PONTO_ENDERECO", ponto.info1)
+            intent.putExtra("PONTO_LATITUDE", ponto.latitude)
+            intent.putExtra("PONTO_LONGITUDE", ponto.longitude)
+            intent.putExtra("IMAGE_PATH", ponto.fotoPath)
             context.startActivity(intent)
         }
     }
@@ -44,5 +61,6 @@ class PontoTuristicoAdapter(
         val info1: TextView = itemView.findViewById(R.id.infoPontoTuristico1)
         val info2: TextView = itemView.findViewById(R.id.infoPontoTuristico2)
         val info3: TextView = itemView.findViewById(R.id.infoPontoTuristico3)
+        val imageView: ImageView = itemView.findViewById(R.id.imageViewPontoTuristico)
     }
 }

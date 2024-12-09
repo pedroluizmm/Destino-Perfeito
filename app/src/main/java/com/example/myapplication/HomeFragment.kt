@@ -29,6 +29,17 @@ class HomeFragment : Fragment() {
         adapter = PontoTuristicoAdapter(listaPontosTuristicos, requireContext())
         recyclerView.adapter = adapter
 
+        carregarPontosTuristicos()
+
         return view
     }
+
+    private fun carregarPontosTuristicos() {
+        PontoTuristicoService.buscarPontosTuristicos(requireContext()) {
+            requireActivity().runOnUiThread {
+                adapter.notifyDataSetChanged()
+            }// Atualiza o RecyclerView na thread principal
+        }
+    }
+
 }

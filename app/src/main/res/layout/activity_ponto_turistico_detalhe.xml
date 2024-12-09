@@ -5,6 +5,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <!-- Imagem na parte superior -->
+    <ImageView
+        android:id="@+id/imageViewPontoTuristico"
+        android:layout_width="0dp"
+        android:layout_height="200dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:src="@drawable/logo_placeholder"/>
+
     <!-- Nome do Ponto -->
     <TextView
         android:id="@+id/textViewNomeDetalhe"
@@ -14,7 +25,7 @@
         android:text="Nome do Ponto"
         android:textSize="22sp"
         android:textStyle="bold"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/imageViewPontoTuristico"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -60,11 +71,11 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Abrir no GPS"
+        android:layout_margin="16dp"
         app:layout_constraintTop_toBottomOf="@id/textViewInfo3"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/buttonFavoritar"
-        android:layout_margin="16dp" />
+        app:layout_constraintBottom_toTopOf="@+id/buttonFavoritar" />
 
     <!-- Botão de Favoritar -->
     <Button
@@ -72,9 +83,10 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Adicionar aos Favoritos"
+        android:layout_margin="16dp"
         app:layout_constraintTop_toBottomOf="@id/buttonOpenGPS"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_margin="16dp" />
+        app:layout_constraintBottom_toBottomOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

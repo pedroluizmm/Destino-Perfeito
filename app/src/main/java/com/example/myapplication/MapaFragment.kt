@@ -10,14 +10,15 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 
 class MapaFragment : Fragment() {
 
-    private val localInicial = LatLng(-3.71722, -38.54342) // Fortaleza, CE (exemplo)
-    private val zoomInicial = 12f // Zoom inicial para a localização
-
-    private var marcadorAnterior: String? = null
+    private lateinit var googleMap: GoogleMap
+    private val localFortaleza = LatLng(-3.71722, -38.54342) // Fortaleza
+    private val zoomInicial = 12f
+    private var marcadorAnterior: Marker? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,40 +32,51 @@ class MapaFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val mapFragment = childFragmentManager.findFragmentById(R.id.map_fragment) as SupportMapFragment
-        mapFragment.getMapAsync { googleMaps ->
-            configurarMapa(googleMaps)
-            addMarkers(googleMaps)
+        mapFragment.getMapAsync { map ->
+            googleMap = map
+            configurarMapa()
+            carregarPontosTuristicos()
+        }
+    }
 
-            googleMaps.setOnMarkerClickListener { marker ->
-                if (marker.title == marcadorAnterior) {
-                    abrirTelaDetalhes(marker.title ?: "")
-                    true
-                } else {
-                    marcadorAnterior = marker.title
-                    false
-                }
+    private fun configurarMapa() {
+        // Centraliza o mapa em Fortaleza
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(localFortaleza, zoomInicial))
+
+        // Configura o clique nos marcadores
+        googleMap.setOnMarkerClickListener { marker ->
+            if (marcadorAnterior != null && marcadorAnterior == marker) {
+                abrirDetalhesDoPonto(marker.title)
+                true
+            } else {
+                marcadorAnterior = marker
+                false
             }
         }
     }
 
-    private fun configurarMapa(googleMap: GoogleMap) {
-        // Define a localização inicial do mapa
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(localInicial, zoomInicial))
+    private fun carregarPontosTuristicos() {
+        // Busca os pontos turísticos do serviço
+        PontoTuristicoService.buscarPontosTuristicos(requireContext()) {
+            adicionarMarcadores()
+        }
     }
 
-    private fun addMarkers(googleMap: GoogleMap) {
-        PontoTuristicoRepositorio.listaPontosTuristicos.forEach { place ->
+    private fun adicionarMarcadores() {
+        googleMap.clear() // Limpa marcadores antigos
+        PontoTuristicoRepositorio.listaPontosTuristicos.forEach { ponto ->
             googleMap.addMarker(
                 MarkerOptions()
-                    .title(place.nome)
-                    .snippet(place.info1)
-                    .position(LatLng(place.latitude, place.longitude))
+                    .position(LatLng(ponto.latitude, ponto.longitude))
+                    .title(ponto.nome)
+                    .snippet(ponto.info1)
             )
         }
     }
 
-    private fun abrirTelaDetalhes(marker: String) {
-        val pontoTuristico = PontoTuristicoRepositorio.listaPontosTuristicos.find { it.nome == marker }
+    private fun abrirDetalhesDoPonto(nome: String?) {
+        // Busca o ponto turístico pelo nome e abre a tela de detalhes
+        val pontoTuristico = PontoTuristicoRepositorio.listaPontosTuristicos.find { it.nome == nome }
         pontoTuristico?.let {
             val intent = Intent(requireContext(), PontoTuristicoDetalhe::class.java)
             intent.putExtra("PONTO_TURISTICO", it)
