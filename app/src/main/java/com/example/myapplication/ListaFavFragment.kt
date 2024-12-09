@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity.MODE_PRIVATE
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -54,7 +55,7 @@ class ListaFavFragment : Fragment() {
     }
 
     private fun atualizarListaFavoritos() {
-        val sharedPreferences = requireContext().getSharedPreferences("FAVORITOS", Context.MODE_PRIVATE)
+        val sharedPreferences = getSharedPreferences("FAVORITOS", MODE_PRIVATE)
         val favoritosJson = sharedPreferences.all.values
         val gson = Gson()
 
@@ -62,23 +63,9 @@ class ListaFavFragment : Fragment() {
             gson.fromJson(favorito.toString(), PontoTuristico::class.java)
         }
 
-        val itensRemovidos = listaFavoritos.filterNot { it in novaListaFavoritos }
-        val itensAdicionados = novaListaFavoritos.filterNot { it in listaFavoritos }
+        listaFavoritos.clear()
+        listaFavoritos.addAll(novaListaFavoritos)
 
-        // Remove itens antigos
-        itensRemovidos.forEach { item ->
-            val index = listaFavoritos.indexOf(item)
-            if (index != -1) {
-                listaFavoritos.removeAt(index)
-                favoritosAdapter.notifyItemRemoved(index)
-            }
-        }
-
-        // Adiciona novos itens
-        itensAdicionados.forEach { item ->
-            listaFavoritos.add(item)
-            val index = listaFavoritos.indexOf(item)
-            favoritosAdapter.notifyItemInserted(index)
-        }
+        favoritosAdapter.notifyDataSetChanged()
     }
 }
