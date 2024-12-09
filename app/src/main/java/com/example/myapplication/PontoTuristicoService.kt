@@ -27,7 +27,7 @@ object PontoTuristicoService {
         }
         val placesClient: PlacesClient = Places.createClient(context)
 
-        val placeFields = listOf(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS, Place.Field.LAT_LNG, Place.Field.PHOTO_METADATAS)
+        val placeFields = listOf(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS, Place.Field.LAT_LNG, Place.Field.PHOTO_METADATAS,Place.Field.RATING, Place.Field.OPENING_HOURS )
         val center = LatLng(latitude, longitude)
         val circularBounds = CircularBounds.newInstance(center, radius.toDouble())
         val includedTypes = listOf("tourist_attraction", "restaurant", "cafe")
@@ -62,8 +62,8 @@ object PontoTuristicoService {
                                         PontoTuristico(
                                             nome = place.name ?: "Sem nome",
                                             info1 = place.address ?: "Endereço não disponível",
-                                            info2 = "",
-                                            info3 = "",
+                                            info2 = place.rating?.toString() ?: "Sem avaliações", // Avaliações
+                                            info3 = place.openingHours?.weekdayText?.joinToString("\n") ?: "Horário não disponível", // Horários
                                             latitude = latLng.latitude,
                                             longitude = latLng.longitude,
                                             fotoPath = fotoPath // Adiciona a foto ao objeto

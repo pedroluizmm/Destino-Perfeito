@@ -19,8 +19,13 @@
         android:id="@+id/filtro_topbar"
         />
     <item
-        android:title="Configurações"
-        android:id="@+id/config_topbar"
+        android:title="Tema"
+        android:id="@+id/tema_topbar"
         />
+    <item
+        android:title="Sair"
+        android:id="@+id/sair_topbar"
+        />
+
 
 </menu>
