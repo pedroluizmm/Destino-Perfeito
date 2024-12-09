@@ -1,45 +1,54 @@
 package com.example.myapplication
 
-import android.content.Intent
 import android.os.Bundle
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
+
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var editTextEmail: EditText
-    private lateinit var editTextSenha: EditText
-    private lateinit var buttonLogin: Button
-    private lateinit var textViewCriarConta: TextView
+    private lateinit var tabLayout: TabLayout
+    private lateinit var viewPager2: ViewPager2
+    private lateinit var adapter: ViewPagerAdapter
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        editTextEmail = findViewById(R.id.editTextEmail)
-        editTextSenha = findViewById(R.id.editTextSenha)
-        buttonLogin = findViewById(R.id.buttonLogin)
-        textViewCriarConta = findViewById(R.id.textViewCriarConta)
+        tabLayout = findViewById(R.id.tab_layout)
+        viewPager2 = findViewById(R.id.view_pager)
 
-        buttonLogin.setOnClickListener {
-            val email = editTextEmail.text.toString()
-            val senha = editTextSenha.text.toString()
-            if (email.isNotEmpty() && senha.isNotEmpty()) {
-                Toast.makeText(this, "Login realizado com sucesso!", Toast.LENGTH_SHORT).show()
+        adapter = ViewPagerAdapter(supportFragmentManager, lifecycle)
+        viewPager2.adapter = adapter
 
-                val intent = Intent(this, Tutorial::class.java)
-                startActivity(intent)
-
-            } else {
-                Toast.makeText(this, "Por favor, preencha todos os campos", Toast.LENGTH_SHORT).show()
+        TabLayoutMediator(tabLayout, viewPager2) { tab, position ->
+            tab.text = when (position) {
+                0 -> "Login"
+                1 -> "Signup"
+                else -> null
             }
-        }
+        }.attach()
 
-        textViewCriarConta.setOnClickListener {
-            val intent = Intent(this, CriacaoConta::class.java)
-            startActivity(intent)
-        }
+        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab) {
+                viewPager2.currentItem = tab.position
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab) {
+
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab) {
+
+            }
+        })
+
+        viewPager2.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                tabLayout.selectTab(tabLayout.getTabAt(position))
+            }
+        })
     }
 }

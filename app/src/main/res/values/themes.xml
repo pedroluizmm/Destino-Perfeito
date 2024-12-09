@@ -12,6 +12,10 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
     </style>
+    <style name="App.Custom.Indicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
+        <item name="android:color">@color/teal_200</item>
+    </style>
+
 
     <style name="Theme.MyApplication" parent="Base.Theme.MyApplication" />
 </resources>

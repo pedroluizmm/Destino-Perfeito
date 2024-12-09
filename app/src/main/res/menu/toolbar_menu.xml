@@ -4,21 +4,23 @@
 
     <item
         android:title="Search"
-        android:id="@+id/search"
-        android:icon="@android:drawable/ic_menu_search"
+        android:id="@+id/search_topbar"
+        android:icon="@drawable/baseline_search_24"
         app:actionViewClass="androidx.appcompat.widget.SearchView"
-        app:showAsAction="ifRoom|collapseActionView"/>
+        app:showAsAction="ifRoom|collapseActionView"
+        />
 
     <item
         android:title="Perfil"
-        android:id="@+id/perfil"
+        android:id="@+id/perfil_topbar"
         />
     <item
         android:title="Filtro"
-        android:id="@+id/filtro"
+        android:id="@+id/filtro_topbar"
         />
     <item
-        android:title="Cofigurações"
-        android:id="@+id/cofiguracoes"
+        android:title="Configurações"
+        android:id="@+id/config_topbar"
         />
+
 </menu>

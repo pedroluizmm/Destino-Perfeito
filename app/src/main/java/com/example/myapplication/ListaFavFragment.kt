@@ -1,29 +1,38 @@
 package com.example.myapplication
 
-import android.content.Intent
+import android.content.Context
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.gson.Gson
 
-class ListaFav : AppCompatActivity() {
+class ListaFavFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
-    private lateinit var bottomNavigation: BottomNavigationView
     private lateinit var favoritosAdapter: PontoTuristicoAdapter
     private lateinit var listaFavoritos: MutableList<PontoTuristico>
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_lista_fav)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        // Inflar o layout para o Fragment
+        return inflater.inflate(R.layout.fragment_lista_fav, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         // Inicializa a RecyclerView
-        recyclerView = findViewById(R.id.recyclerViewFavoritos)
-        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView = view.findViewById(R.id.recyclerViewFavoritos)
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         // Recupera os favoritos salvos em SharedPreferences
-        val sharedPreferences = getSharedPreferences("FAVORITOS", MODE_PRIVATE)
+        val sharedPreferences = requireContext().getSharedPreferences("FAVORITOS", Context.MODE_PRIVATE)
         val favoritosJson = sharedPreferences.all.values // Obtém todos os favoritos salvos
         listaFavoritos = mutableListOf()
 
@@ -35,39 +44,17 @@ class ListaFav : AppCompatActivity() {
         }
 
         // Configura o adapter
-        favoritosAdapter = PontoTuristicoAdapter(listaFavoritos, this)
+        favoritosAdapter = PontoTuristicoAdapter(listaFavoritos, requireContext())
         recyclerView.adapter = favoritosAdapter
-
-        // Configura o BottomNavigationView
-        bottomNavigation = findViewById(R.id.bottomNavigation)
-        bottomNavigation.setOnItemSelectedListener { item ->
-            when (item.itemId) {
-                R.id.navigation_settings -> {
-                    val intent = Intent(this, Perfil::class.java)
-                    startActivity(intent)
-                    true
-                }
-                R.id.navigation_catalog -> {
-                    val intent = Intent(this, MenuPrincipal::class.java)
-                    startActivity(intent)
-                    true
-                }
-                R.id.Mapa -> {
-                    val intent = Intent(this, Perfil::class.java)
-                    startActivity(intent)
-                    true
-                }
-                else -> false
-            }
-        }
     }
+
     override fun onResume() {
         super.onResume()
         atualizarListaFavoritos()
     }
 
     private fun atualizarListaFavoritos() {
-        val sharedPreferences = getSharedPreferences("FAVORITOS", MODE_PRIVATE)
+        val sharedPreferences = requireContext().getSharedPreferences("FAVORITOS", Context.MODE_PRIVATE)
         val favoritosJson = sharedPreferences.all.values
         val gson = Gson()
 
@@ -94,6 +81,4 @@ class ListaFav : AppCompatActivity() {
             favoritosAdapter.notifyItemInserted(index)
         }
     }
-
-
 }
