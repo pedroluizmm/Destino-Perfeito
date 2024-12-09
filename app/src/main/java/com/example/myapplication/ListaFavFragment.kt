@@ -21,30 +21,25 @@ class ListaFavFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflar o layout para o Fragment
         return inflater.inflate(R.layout.fragment_lista_fav, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Inicializa a RecyclerView
         recyclerView = view.findViewById(R.id.recyclerViewFavoritos)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-        // Recupera os favoritos salvos em SharedPreferences
         val sharedPreferences = requireContext().getSharedPreferences("FAVORITOS", Context.MODE_PRIVATE)
-        val favoritosJson = sharedPreferences.all.values // Obtém todos os favoritos salvos
+        val favoritosJson = sharedPreferences.all.values
         listaFavoritos = mutableListOf()
 
-        // Converte o JSON salvo para objetos do tipo PontoTuristico
         val gson = Gson()
         favoritosJson.forEach { favorito ->
             val pontoTuristico = gson.fromJson(favorito.toString(), PontoTuristico::class.java)
             listaFavoritos.add(pontoTuristico)
         }
 
-        // Configura o adapter
         favoritosAdapter = PontoTuristicoAdapter(listaFavoritos, requireContext())
         recyclerView.adapter = favoritosAdapter
     }

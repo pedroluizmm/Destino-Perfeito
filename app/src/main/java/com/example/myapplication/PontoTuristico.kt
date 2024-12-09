@@ -8,18 +8,18 @@ data class PontoTuristico(
     val info1: String,
     val info2: String,
     val info3: String,
-    val latitude: Double,  // Coordenada de latitude
-    val longitude: Double, // Coordenada de longitude
-    val fotoPath: String? = null // Caminho do arquivo da foto
+    val latitude: Double,
+    val longitude: Double,
+    val fotoPath: String? = null
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString() ?: "",
         parcel.readString() ?: "",
         parcel.readString() ?: "",
         parcel.readString() ?: "",
-        parcel.readDouble(),  // Latitude
-        parcel.readDouble(),  // Longitude
-        parcel.readString()   // Lê o caminho da foto (String)
+        parcel.readDouble(),
+        parcel.readDouble(),
+        parcel.readString()
     )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -29,7 +29,7 @@ data class PontoTuristico(
         parcel.writeString(info3)
         parcel.writeDouble(latitude)
         parcel.writeDouble(longitude)
-        parcel.writeString(fotoPath) // Escreve o caminho da foto
+        parcel.writeString(fotoPath)
     }
 
     override fun describeContents(): Int = 0

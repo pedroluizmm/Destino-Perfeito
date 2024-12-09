@@ -22,7 +22,6 @@ class Perfil : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_perfil)
 
-        // Inicializa os componentes
         btnBack = findViewById(R.id.btnBack)
         btnEditarNome = findViewById(R.id.btnEditarNome)
         btnEditarEmail = findViewById(R.id.btnEditarEmail)
@@ -32,7 +31,6 @@ class Perfil : AppCompatActivity() {
         txtEmail = findViewById(R.id.txtEmail)
         txtSenha = findViewById(R.id.txtSenha)
 
-        // Configurações de clique
         btnBack.setOnClickListener {
             finish()
         }

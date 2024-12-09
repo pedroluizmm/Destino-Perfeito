@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "71052932446",
+    "project_id": "destino-perfeito-5b98f",
+    "storage_bucket": "destino-perfeito-5b98f.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:71052932446:android:3b4ec861da529e1f05cbcf",
+        "android_client_info": {
+          "package_name": "com.example.myapplication"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCKcvgax5hlTvEEJSg_FMTmlFy3LarLxkU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

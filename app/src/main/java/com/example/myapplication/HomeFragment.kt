@@ -17,14 +17,11 @@ class HomeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflar o layout do fragmento
         val view = inflater.inflate(R.layout.fragment_home, container, false)
 
-        // Inicializar o RecyclerView
         recyclerView = view.findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-        // Adicionar a lista de pontos turísticos ao adaptador
         val listaPontosTuristicos = PontoTuristicoRepositorio.listaPontosTuristicos
         adapter = PontoTuristicoAdapter(listaPontosTuristicos, requireContext())
         recyclerView.adapter = adapter
@@ -38,7 +35,7 @@ class HomeFragment : Fragment() {
         PontoTuristicoService.buscarPontosTuristicos(requireContext()) {
             requireActivity().runOnUiThread {
                 adapter.notifyDataSetChanged()
-            }// Atualiza o RecyclerView na thread principal
+            }
         }
     }
 
