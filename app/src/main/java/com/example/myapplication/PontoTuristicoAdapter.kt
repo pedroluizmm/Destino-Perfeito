@@ -26,8 +26,8 @@ class PontoTuristicoAdapter(
         val ponto = pontosTuristicos[position]
         holder.nome.text = ponto.nome
         holder.info1.text = ponto.info1
-        holder.info2.text = ponto.info2
-        holder.info3.text = ponto.info3
+        holder.info2.visibility = View.GONE
+        holder.info3.visibility = View.GONE
 
         if (ponto.fotoPath != null) {
             val bitmap = BitmapFactory.decodeFile(ponto.fotoPath)
@@ -45,6 +45,8 @@ class PontoTuristicoAdapter(
             val intent = Intent(context, PontoTuristicoDetalhe::class.java)
             intent.putExtra("PONTO_NOME", ponto.nome)
             intent.putExtra("PONTO_ENDERECO", ponto.info1)
+            intent.putExtra("PONTO_AVALIACAO", ponto.info2)
+            intent.putExtra("PONTO_HORARIO", ponto.info3)
             intent.putExtra("PONTO_LATITUDE", ponto.latitude)
             intent.putExtra("PONTO_LONGITUDE", ponto.longitude)
             intent.putExtra("IMAGE_PATH", ponto.fotoPath)

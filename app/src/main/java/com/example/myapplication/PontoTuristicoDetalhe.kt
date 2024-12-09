@@ -24,12 +24,16 @@ class PontoTuristicoDetalhe : AppCompatActivity() {
         val latitude = intent.getDoubleExtra("PONTO_LATITUDE", 0.0)
         val longitude = intent.getDoubleExtra("PONTO_LONGITUDE", 0.0)
         val imagePath = intent.getStringExtra("IMAGE_PATH")
+        val avaliacao = intent.getStringExtra("PONTO_AVALIACAO")
+        val horario = intent.getStringExtra("PONTO_HORARIO")
 
         val imageView: ImageView = findViewById(R.id.imageViewPontoTuristico)
 
         // Configura os dados na interface
         findViewById<TextView>(R.id.textViewNomeDetalhe).text = nome
         findViewById<TextView>(R.id.textViewInfo1).text = endereco
+        findViewById<TextView>(R.id.textViewInfo2).text = avaliacao ?: "Sem avaliações disponíveis"
+        findViewById<TextView>(R.id.textViewInfo3).text = horario ?: "Horário não disponível"
 
         // Carrega a imagem do cache
         if (imagePath != null) {
@@ -72,8 +76,8 @@ class PontoTuristicoDetalhe : AppCompatActivity() {
             val ponto = PontoTuristico(
                 nome = nome ?: "Sem nome",
                 info1 = endereco ?: "Endereço não disponível",
-                info2 = "",
-                info3 = "",
+                info2 = avaliacao ?: "",
+                info3 = horario ?: "",
                 latitude = latitude,
                 longitude = longitude,
                 fotoPath = imagePath // Salva o caminho da imagem no cache

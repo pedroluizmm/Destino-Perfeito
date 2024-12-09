@@ -5,10 +5,13 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.auth.FirebaseAuth
 
 class MenuPrincipal : AppCompatActivity() {
 
@@ -89,11 +92,48 @@ class MenuPrincipal : AppCompatActivity() {
                 Toast.makeText(this, "Ir para Filtro", Toast.LENGTH_SHORT).show()
                 true
             }
-            R.id.config_topbar -> {
-                startActivity(Intent(this, Config::class.java))
+            R.id.sair_topbar -> {
+                FirebaseAuth.getInstance().signOut()
+                Toast.makeText(this, "Você saiu da conta.", Toast.LENGTH_SHORT).show()
+                startActivity(Intent(this, MainActivity::class.java))
+                true
+            }R.id.tema_topbar -> {
+                showThemeSelectionDialog()
                 true
             }
             else -> super.onOptionsItemSelected(item)
         }
     }
+
+    private fun showThemeSelectionDialog() {
+        val options = arrayOf("Tema Claro", "Tema Escuro")
+        val selectedTheme = getCurrentTheme() // Função para obter o tema atual
+
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Escolha o Tema")
+        builder.setSingleChoiceItems(options, selectedTheme) { dialog, which ->
+            when (which) {
+                0 -> setThemeMode(AppCompatDelegate.MODE_NIGHT_NO) // Tema Claro
+                1 -> setThemeMode(AppCompatDelegate.MODE_NIGHT_YES) // Tema Escuro
+            }
+            dialog.dismiss()
+        }
+        builder.create().show()
+    }
+
+    private fun setThemeMode(mode: Int) {
+        AppCompatDelegate.setDefaultNightMode(mode)
+        saveThemePreference(mode)
+    }
+
+    private fun saveThemePreference(mode: Int) {
+        val sharedPreferences = getSharedPreferences("app_preferences", MODE_PRIVATE)
+        sharedPreferences.edit().putInt("theme_mode", mode).apply()
+    }
+
+    private fun getCurrentTheme(): Int {
+        val sharedPreferences = getSharedPreferences("app_preferences", MODE_PRIVATE)
+        return sharedPreferences.getInt("theme_mode", AppCompatDelegate.MODE_NIGHT_NO)
+    }
+
 }
