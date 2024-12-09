@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment(), FiltroAplicavel {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: PontoTuristicoAdapter
@@ -35,6 +35,14 @@ class HomeFragment : Fragment() {
         PontoTuristicoService.buscarPontosTuristicos(requireContext()) {
             requireActivity().runOnUiThread {
                 adapter.notifyDataSetChanged()
+            }
+        }
+    }
+    override fun aplicarFiltro(tipos: List<String>, raio: Int) {
+        // Atualiza a lista de pontos turísticos com os filtros
+        PontoTuristicoService.buscarPontosTuristicos(requireContext(), raio, tipos) {
+            requireActivity().runOnUiThread {
+                adapter.notifyDataSetChanged() // Atualiza a RecyclerView
             }
         }
     }

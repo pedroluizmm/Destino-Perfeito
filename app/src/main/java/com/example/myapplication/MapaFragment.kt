@@ -13,7 +13,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 
-class MapaFragment : Fragment() {
+class MapaFragment : Fragment(), FiltroAplicavel {
 
     private lateinit var googleMap: GoogleMap
     private val localFortaleza = LatLng(-3.71722, -38.54342) // Fortaleza
@@ -81,6 +81,15 @@ class MapaFragment : Fragment() {
             val intent = Intent(requireContext(), PontoTuristicoDetalhe::class.java)
             intent.putExtra("PONTO_TURISTICO", it)
             startActivity(intent)
+        }
+    }
+
+    override fun aplicarFiltro(tipos: List<String>, raio: Int) {
+        // Atualiza os marcadores no mapa com os filtros
+        PontoTuristicoService.buscarPontosTuristicos(requireContext(), raio, tipos) {
+            requireActivity().runOnUiThread {
+                adicionarMarcadores() // Método para adicionar os novos marcadores no mapa
+            }
         }
     }
 }

@@ -1,0 +1,51 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Escolha os Tipos de Locais"
+        android:textStyle="bold" />
+
+    <CheckBox
+        android:id="@+id/checkbox_restaurant"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Restaurantes" />
+
+    <CheckBox
+        android:id="@+id/checkbox_cafe"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cafés" />
+
+    <CheckBox
+        android:id="@+id/checkbox_tourist_attraction"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Atrações Turísticas" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Defina o Raio (em metros)"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/input_radius"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Exemplo: 5000"
+        android:inputType="number" />
+
+    <Button
+        android:id="@+id/button_apply_filter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Aplicar" />
+</LinearLayout>

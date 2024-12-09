@@ -17,6 +17,7 @@ object PontoTuristicoService {
     fun buscarPontosTuristicos(
         context: Context,
         radius: Int = 10000, // Raio da busca em metros
+        types: List<String> = emptyList(),
         callback: () -> Unit
     ) {
         val latitude = -3.71722 // Fortaleza
@@ -30,10 +31,10 @@ object PontoTuristicoService {
         val placeFields = listOf(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS, Place.Field.LAT_LNG, Place.Field.PHOTO_METADATAS,Place.Field.RATING, Place.Field.OPENING_HOURS )
         val center = LatLng(latitude, longitude)
         val circularBounds = CircularBounds.newInstance(center, radius.toDouble())
-        val includedTypes = listOf("tourist_attraction", "restaurant", "cafe")
+
 
         val searchNearbyRequest = SearchNearbyRequest.builder(circularBounds, placeFields)
-            .setIncludedTypes(includedTypes)
+            .setIncludedTypes(types)
             .setMaxResultCount(20)
             .build()
 
@@ -42,18 +43,18 @@ object PontoTuristicoService {
                 val pontosTuristicos = mutableListOf<PontoTuristico>()
 
                 response.places.forEach { place ->
-                    val photoMetadata = place.photoMetadatas?.firstOrNull() // Obtém o primeiro metadado da foto
+                    val photoMetadata = place.photoMetadatas?.firstOrNull()
 
                     if (photoMetadata != null) {
                         // Configura a solicitação da foto
                         val photoRequest = FetchPhotoRequest.builder(photoMetadata)
-                            .setMaxWidth(500)  // Define a largura máxima da imagem
-                            .setMaxHeight(500) // Define a altura máxima da imagem
+                            .setMaxWidth(500)
+                            .setMaxHeight(500)
                             .build()
 
                         placesClient.fetchPhoto(photoRequest)
                             .addOnSuccessListener { fetchPhotoResponse ->
-                                val bitmap = fetchPhotoResponse.bitmap // Aqui você pode acessar a foto
+                                val bitmap = fetchPhotoResponse.bitmap
 
                                 val fotoPath = bitmap?.let { ImageUtils.salvarBitmapNoCache(context, it) }
 
@@ -62,16 +63,15 @@ object PontoTuristicoService {
                                         PontoTuristico(
                                             nome = place.name ?: "Sem nome",
                                             info1 = place.address ?: "Endereço não disponível",
-                                            info2 = place.rating?.toString() ?: "Sem avaliações", // Avaliações
+                                            info2 = place.rating?.toString() ?: "Sem avaliações",
                                             info3 = place.openingHours?.weekdayText?.joinToString("\n") ?: "Horário não disponível", // Horários
                                             latitude = latLng.latitude,
                                             longitude = latLng.longitude,
-                                            fotoPath = fotoPath // Adiciona a foto ao objeto
+                                            fotoPath = fotoPath
                                         )
                                     )
                                 }
 
-                                // Atualiza o repositório e executa o callback
                                 PontoTuristicoRepositorio.listaPontosTuristicos.apply {
                                     clear()
                                     addAll(pontosTuristicos)
