@@ -54,3 +54,40 @@ O objetivo principal é tornar a experiência de explorar destinos turísticos m
 ### **Clonando o Repositório**
 ```bash
 git clone https://github.com/pedroluizmm/Destino-Perfeito.git
+```
+Abra no Android Studio
+
+```
+Abra o Android Studio e selecione File > Open.
+Navegue até o repositório clonado e abra-o.
+```
+
+Construa o Projeto
+
+```
+Clique no menu "Build" e selecione "Build Project".
+Certifique-se de que não há erros antes de continuar.
+Execute o Aplicativo
+```
+
+Conecte seu dispositivo Android ou inicie um emulador.
+
+```
+Clique no botão "Run" ou selecione Run > Run 'app'.
+```
+## **Imagens**
+### Tela de log-in
+![image](https://github.com/user-attachments/assets/4670509c-1d75-43b4-be71-a10ffe67ee74)
+
+### Tela de Criação de conta
+![image](https://github.com/user-attachments/assets/e5ec64f4-a210-4f12-80a7-7c363d83572a)
+
+### Tela Home
+![image](https://github.com/user-attachments/assets/8f8a1a5b-c79c-4bb6-8fe1-2a2c6123c5cc)
+
+### Tela dos locais
+![image](https://github.com/user-attachments/assets/54091d25-fe1d-4ac7-98e9-d6d33433c311)
+
+### Tela do mapa
+![image](https://github.com/user-attachments/assets/24ecc70a-76e6-4ba1-83e0-d5fa11534caf)
+
